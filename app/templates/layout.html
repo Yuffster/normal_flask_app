@@ -1,0 +1,43 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+
+    {% block body %}{% endblock %}
+
+    <script name="pagehandler">
+    /**
+     * So all the page application code lives in its own named autoclosure
+     * that gets added to PageHandlers and is called by the Application 
+     * bootstrapper at the bottom of the layout.
+     */
+    PageHandlers = {};
+    </script>
+
+    {% block scripts %}
+        {% for src in scripts %}
+            <script type="text/javascript" src="/{{ src }}"></script>
+        {% endfor %}
+    {% endblock %}
+
+    {% block views %}
+        {% for name, content in views %}
+            <script type="template" name="{{ name }}">
+                {{ content }}
+            </script>
+        {% endfor %}
+    {% endblock %}
+
+    <script name="application-bootstrapper">
+    /** 
+     * This runs the application code and page handlers.
+     * See scripts/application.js for full docs.
+     **/
+    Application();
+    </script>
+</body>
+
+</html>
