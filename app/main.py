@@ -30,11 +30,18 @@ def get_assets(kind, ext, content=False):
 
 @app.context_processor
 def inject_assets():
+    views = get_assets('views', 'html', content=True)
+    named_views = {}
     scripts = []
+    for k, v in views.items():
+        k = k.replace('.html', '')
+        k = k.replace('/', '.')
+        named_views[k] = v
     for s in get_assets('scripts', 'js'):
         scripts.append('scripts/'+s)
     return dict(
-        scripts=scripts
+        scripts=scripts,
+        views=named_views.items()
     )
 
 @app.route("/<path:path>")
